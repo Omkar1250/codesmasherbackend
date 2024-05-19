@@ -18,7 +18,7 @@ dbConnect();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? "https://your-netlify-site.netlify.app" : "http://localhost:3000",
+    origin: process.env.NODE_ENV === 'production' ? "https://https://codeshuttle.netlify.app/" : "http://localhost:3000",
     credentials: true,
   })
 );
