@@ -14,6 +14,7 @@ const categorySchema = new mongoose.Schema({
             ref:'Post'
         },
     ],
+    
 });
 
 module.exports = mongoose.model("Category", categorySchema)

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { createPost, getAllPosts,getPostDetails, deletePost, editPost } = require("../Controller/Post");
-const { createCategory, showAllCategories } = require('../Controller/Category');
+const { createCategory, showAllCategories, categoryPageDetails } = require('../Controller/Category');
 
 const { auth, isAdmin, isUser } = require("../middlewares/auth");
 
@@ -16,7 +16,7 @@ router.post("/editpost",auth, isAdmin, editPost)
 // Routes for categories
 router.post("/createcategory", auth, isAdmin, createCategory); 
 router.get("/showallcategory", showAllCategories);
-
+router.post("/getcategorypagedetails", categoryPageDetails)
 
 
 module.exports = router;
