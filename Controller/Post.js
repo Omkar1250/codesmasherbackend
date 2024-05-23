@@ -133,10 +133,16 @@ exports.getPostDetails = async(req, res) => {
         const postDetails = await Post.findOne({
             _id:postId,
         })
-            .populate('comments')
+            .populate({
+                path:'comments',
+                populate: {
+                    path:'user',
+                    select: 'firstName lastName image'
+                }
+            })
             .populate({
                 path: 'author',
-                select: 'name email'  // Optionally limit the fields to return
+                select: 'firstName '  // Optionally limit the fields to return
             })
             .populate({
                 path: 'category', 

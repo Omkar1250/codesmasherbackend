@@ -15,6 +15,10 @@ const commentsSchema = new mongoose.Schema({
         ref: "Post",
         index: true,
     },
+    createdAt:{
+        type:Date,
+        default:Date.now,
+    },  
 });
 
 module.exports = mongoose.model("Comments", commentsSchema);
