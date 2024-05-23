@@ -2,18 +2,20 @@ const Comment = require('../Models/Comments');
 const Post = require("../Models/Post")
 const User = require("../Models/User")
 
-exports.createComment = async(req, res) => {
+exports.createComment = async (req, res) => {
     try {
-        const userId = req.user.id;  // Authentication middleware must ensure req.user is populated
-        const { commentDesc, post } = req.body;
+        const userId = req.user.id;  // Ensure the authentication middleware populates req.user
+        const { commentDesc, postId } = req.body;
 
-        if (!commentDesc || !post) {
+        // Check if commentDesc and post are provided
+        if (!commentDesc || !postId) {
             return res.status(400).json({
                 success: false,
                 message: "Comment description and post ID are required"
             });
         }
 
+        // Fetch user details
         const userDetails = await User.findById(userId);
         if (!userDetails) {
             return res.status(401).json({
@@ -22,7 +24,8 @@ exports.createComment = async(req, res) => {
             });
         }
 
-        const postDetails = await Post.findById(post);
+        // Fetch post details
+        const postDetails = await Post.findById(postId);
         if (!postDetails) {
             return res.status(404).json({
                 success: false,
@@ -30,9 +33,13 @@ exports.createComment = async(req, res) => {
             });
         }
 
-        const comment = await Comment.create({ commentDesc, user: userId, post: post });
-       const updatedpost = await Post.findByIdAndUpdate(post, { $push: { comments: comment._id } }, { new: true });
-            console.log(updatedpost)
+        // Create comment
+        const comment = await Comment.create({ commentDesc, user: userId, post: postId });
+
+        // Update post with the new comment
+        await Post.findByIdAndUpdate(postId, { $push: { comments: comment._id } }, { new: true });
+
+        // Respond with success message and comment data
         res.status(200).json({
             success: true,
             message: "Comment created successfully",
@@ -47,5 +54,4 @@ exports.createComment = async(req, res) => {
             error: error.message
         });
     }
-}
- 
+};

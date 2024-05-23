@@ -8,6 +8,6 @@ const { createComment } = require("../Controller/Comment");
 
 
 // Routes for comments
-router.post("/createcomment", auth, isUser, createComment);
+router.post('/createcomment', auth, isUser, createComment);
 
 module.exports = router
