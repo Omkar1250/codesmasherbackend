@@ -18,7 +18,7 @@ dbConnect();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? "https://main.du91r8v0by72d.amplifyapp.com" : "http://localhost:3000",
+    origin: process.env.NODE_ENV === 'production' ? "https://codesmasher.in" : "http://localhost:3000",
     credentials: true,
   })
 );
