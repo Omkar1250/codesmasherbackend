@@ -56,7 +56,7 @@ exports.signup = async(req, res) => {
         }
         //find most recent otp
         const response = await OTP.find({email}).sort({createdAt: -1}).limit(1)
-        console.log(response)
+   
 
         if(response.length === 0){
             return res.status(400).json({
@@ -105,7 +105,7 @@ exports.signup = async(req, res) => {
             message: "User registered succefully",
         })
     }catch(error){
-            console.error(error)
+            
             return res.status(500).json({
                 success:false,
                 message:"User cannot registered, Please try again"
@@ -186,7 +186,7 @@ exports.login = async (req, res) => {
 exports.sendotp = async (req, res) => {
     try {
         const { email } = req.body; // Extract email from request body
-        console.log(email);
+       
 
         // Check if the user already exists
         const checkUserPresent = await User.findOne({ email });
@@ -218,16 +218,15 @@ exports.sendotp = async (req, res) => {
         // Store the email and OTP in the database
         const otpPayload = { email, otp };
         const otpBody = await OTP.create(otpPayload);
-        console.log("OTP Body", otpBody);
+        
 
         // Return success response with generated OTP
         return res.status(200).json({
             success: true,
-            message: `OTP Sent Successfully`,
-            otp,
+    
         });
     } catch (error) {
-        console.error(error.message); // Log the error for debugging
+         // Log the error for debugging
         return res.status(500).json({ success: false, error: error.message });
     }
 };

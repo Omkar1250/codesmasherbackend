@@ -22,7 +22,7 @@ exports.createCategory = async(req, res) => {
             name:name,
             description: description
         })
-        console.log(CategoryDetails)
+        
 
         return res.status(200).json({
             success:true,
@@ -40,7 +40,7 @@ exports.createCategory = async(req, res) => {
 
 exports.showAllCategories = async(req, res)=> {
     try {
-        console.log("Inside ShowAllCategories-----------------");
+      
         const allCategory = await Category.find({});
         res.status(200).json({
             success:true,
@@ -48,7 +48,7 @@ exports.showAllCategories = async(req, res)=> {
             data: allCategory
         })
     } catch (error) {
-        console.log(error.message); 
+
         return res.status(400).json({
             success:false,
             message:error.message, 
@@ -61,7 +61,7 @@ exports.showAllCategories = async(req, res)=> {
 exports.categoryPageDetails = async (req, res) => {
     try {
         const {categoryId} = req.body
-        console.log("PRINTING id", categoryId)
+    
 
         const selectedCategory = await Category.findById(categoryId)
         .populate({
@@ -72,7 +72,7 @@ exports.categoryPageDetails = async (req, res) => {
         
 
         if(!selectedCategory){
-            console.log("Category Not Found")
+            
             return res.status(404).json({
                 success:false,
                 message: "Category Not Found"

@@ -7,7 +7,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 exports.updateProfile = async(req, res) => {
     try {
 
-        console.log(req.body)
+
         const {
             firstName="",
             lastName="",
@@ -18,19 +18,19 @@ exports.updateProfile = async(req, res) => {
         } = req.body;
          const id = req.user.id;
 
-         console.log("printinggg user iddddd", id)
+   
         //find the profile by id
         const userDetails = await User.findById(id)
-        console.log("Printing user details", userDetails)
+       
         const profile = await Profile.findById(userDetails.additionalDetails)
-        console.log("User details---------", profile)
+      
 
 
         const user = await User.findByIdAndUpdate(id, { 
             firstName, 
             lastName, 
         }) 
-        console.log(user)
+       
 
         await user.save();
             // Update the profile fields
@@ -54,7 +54,7 @@ exports.updateProfile = async(req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+ 
         return res.status(500).json({
             success:false, 
             error:error.message,
@@ -81,7 +81,7 @@ exports.getProfileDetails = async(req, res) => {
             data:allProfileDetails
          }) 
     } catch (error) {
-        console.log(error)
+      
         return res.status(400).json({
             success:false,
             message:"Something went wrong while fetching post"
@@ -101,7 +101,7 @@ exports.updateProfilePicture = async(req, res) => {
             1000,
             1000
         )
-        console.log(image)
+
         const updateProfile = await User.findByIdAndUpdate(
             {_id: id},
             {image: image.secure_url},
@@ -124,7 +124,7 @@ exports.updateProfilePicture = async(req, res) => {
 exports.deleteAccount = async(req, res) => {
     try {
         const id = req.user.id;
-        console.log("--------------------------------------------------------------------", id);
+      
 
         const user = await User.findById({ _id: id})
         if(!user){
@@ -141,7 +141,7 @@ exports.deleteAccount = async(req, res) => {
             message:"User deleted successfully"
          })
     } catch (error) {
-        console.log(error)
+     
         return res.status(400).json({
             success:false,
             message:"User cannot be deleted, Something went wrong"

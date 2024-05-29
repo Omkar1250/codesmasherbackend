@@ -18,8 +18,7 @@ exports.createPost = async (req, res) => {
         // Get thumbnail from request files
         const thumbnail = req.files.thumbnailImage; // Access the correct field name
 
-        console.log("Uploaded files:", req.files); // Log uploaded files
-        console.log("Thumbnail file:", thumbnail); // Log thumbnail file
+       
 
         // Convert tag from stringified array to Array
         const tag = JSON.parse(_tag);
@@ -55,7 +54,7 @@ exports.createPost = async (req, res) => {
             thumbnail,
             process.env.FOLDER_NAME
         );
-        console.log("Thumbnail uploaded to Cloudinary:", thumbnailImage);
+     
 
         // Create the new post with the above details
         const newPost = await Post.create({
@@ -129,7 +128,7 @@ exports.getAllPosts = async (req, res) => {
 exports.getPostDetails = async(req, res) => {
     try {
         const {postId} = req.body  // Assuming you use route parameter to pass post ID
-        console.log(postId)
+        
         const postDetails = await Post.findOne({
             _id:postId,
         })
@@ -187,7 +186,7 @@ exports.editPost = async (req, res) => {
         }
 
         if (req.files && req.files.thumbnailImage) {
-            console.log("Thumbnail update");
+         
             const thumbnail = req.files.thumbnailImage;
             const thumbnailImage = await uploadImageToCloudinary(
                 thumbnail,
