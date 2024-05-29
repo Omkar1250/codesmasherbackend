@@ -18,7 +18,7 @@ dbConnect();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? "https://15.207.71.40/" : "http://localhost:3000",
+    origin: process.env.NODE_ENV === 'production' ? "https://15.207.71.40" : "http://localhost:3000",
     credentials: true,
   })
 );
