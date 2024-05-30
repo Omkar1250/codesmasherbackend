@@ -18,7 +18,7 @@ dbConnect();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production' ? "https://codesmasher.in" : "http://localhost:3000",
+    origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
     credentials: true,
   })
 );
