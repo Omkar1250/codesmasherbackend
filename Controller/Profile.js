@@ -150,3 +150,34 @@ exports.deleteAccount = async(req, res) => {
     }
 }
 
+exports.getAllUsers = async(req, res) =>  {
+    try {
+        const users = await User.find({},
+            {
+                firstName:true,
+                lastName:true,
+                email:true,
+                accountType:true,
+                image:true
+            }
+        );
+         if(!users){
+            return res.status(400).json({
+                success:false,
+                message:"No Users Found"
+            })
+         }
+
+         return res.status(200).json({
+            success: true,
+            message:"All user fetch successfully",
+            data: users
+         })
+        } catch (error) {
+      
+            return res.status(400).json({
+                success:false,
+                message:"Something went wrong while fetching Users"
+            })
+        }
+    }
