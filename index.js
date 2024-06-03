@@ -13,7 +13,7 @@ const cors = require("cors");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
-const isProduction = process.env.NODE_ENV === 'production';
+
 
 // Connect to database
 dbConnect();
@@ -52,10 +52,6 @@ app.get("/", (req, res) => {
     message: 'Your server is up and running....'
   };
 
-  // Log response only in non-production environments
-  if (!isProduction) {
-    console.log(response);
-  }
 
   return res.json(response);
 });
