@@ -21,13 +21,14 @@ const isProduction = process.env.NODE_ENV === 'production';
 // Connect to the database
 dbConnect();
 
-// Enable CORS
-app.use(
-  cors({
-    origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
-    credentials: true,
-  })
-);
+// CORS configuration
+const corsOptions = {
+  origin: isProduction
+    ? ["https://codesmasher.in", "https://www.codesmasher.in"]
+    : ["http://localhost:3000"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Enable file uploads
 app.use(
