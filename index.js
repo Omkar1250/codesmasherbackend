@@ -14,15 +14,14 @@ const cors = require("cors");
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
-
-// Connect to database
+// Connect to the database
 dbConnect();
 
-// Enable CORS
+// Enable CORS for specified origins
 app.use(
   cors({
     origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
-    credentials: true,
+    credentials: true, // Allow credentials (e.g., cookies, authorization headers)
   })
 );
 
@@ -46,16 +45,15 @@ app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/comment", commentRoutes);
 app.use("/api/v1/profile", profileRoutes);
 
+// Test route to check if server is running
 app.get("/", (req, res) => {
-  const response = {
+  return res.json({
     success: true,
     message: 'Your server is up and running....'
-  };
-
-
-  return res.json(response);
+  });
 });
 
+// Start the server
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);
 });
