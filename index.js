@@ -13,9 +13,12 @@ const cors = require("cors");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
+const isProduction = process.env.NODE_ENV === 'production';
 
+// Connect to database
 dbConnect();
 
+// Enable CORS
 app.use(
   cors({
     origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
@@ -23,6 +26,7 @@ app.use(
   })
 );
 
+// Enable file uploads
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -30,21 +34,30 @@ app.use(
   })
 );
 
-// Cloudinary connection
+// Connect to Cloudinary
 cloudinaryConnect();
 
 app.use(express.json());
 app.use(cookieParser());
+
+// Define routes
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/comment", commentRoutes);
 app.use("/api/v1/profile", profileRoutes);
 
 app.get("/", (req, res) => {
-  return res.json({
+  const response = {
     success: true,
     message: 'Your server is up and running....'
-  });
+  };
+
+  // Log response only in non-production environments
+  if (!isProduction) {
+    console.log(response);
+  }
+
+  return res.json(response);
 });
 
 app.listen(PORT, () => {
