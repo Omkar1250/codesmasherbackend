@@ -10,20 +10,25 @@ const { cloudinaryConnect } = require("./database/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Connect to the database
 dbConnect();
 
-// Enable CORS for specified origins
-app.use(
-  cors({
-    origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
-    credentials: true, // Allow credentials (e.g., cookies, authorization headers)
-  })
-);
+// CORS configuration
+const corsOptions = {
+  origin: isProduction
+    ? ["https://codesmasher.in", "https://www.codesmasher.in"]
+    : ["http://localhost:3000"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Enable file uploads
 app.use(
@@ -38,6 +43,17 @@ cloudinaryConnect();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
+
+// Logging HTTP requests
+app.use(morgan(isProduction ? 'combined' : 'dev'));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 
 // Define routes
 app.use("/api/v1/auth", userRoutes);
@@ -45,15 +61,31 @@ app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/comment", commentRoutes);
 app.use("/api/v1/profile", profileRoutes);
 
-// Test route to check if server is running
+// Root route
 app.get("/", (req, res) => {
-  return res.json({
+  const response = {
     success: true,
     message: 'Your server is up and running....'
+  };
+
+  // Log response only in non-production environments
+  if (!isProduction) {
+    console.log(response);
+  }
+
+  return res.json(response);
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send({
+    success: false,
+    message: 'Something went wrong!',
+    error: isProduction ? {} : err.message
   });
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);
 });
