@@ -14,31 +14,15 @@ const cors = require("cors");
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
-// Connect to the database
 dbConnect();
 
-// Define allowed origins
-const allowedOrigins = [
-  "https://codesmasher.in",
-  "https://www.codesmasher.in",
-  "http://localhost:3000"
-];
+app.use(
+  cors({
+    origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
+    credentials: true,
+  })
+);
 
-// Enable CORS for specified origins
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true, // Allow credentials (e.g., cookies, authorization headers)
-}));
-
-// Enable file uploads
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -46,19 +30,16 @@ app.use(
   })
 );
 
-// Connect to Cloudinary
+// Cloudinary connection
 cloudinaryConnect();
 
 app.use(express.json());
 app.use(cookieParser());
-
-// Define routes
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/comment", commentRoutes);
 app.use("/api/v1/profile", profileRoutes);
 
-// Test route to check if server is running
 app.get("/", (req, res) => {
   return res.json({
     success: true,
@@ -66,7 +47,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);
 });
