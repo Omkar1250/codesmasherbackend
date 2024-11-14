@@ -18,7 +18,7 @@ dbConnect();
 
 app.use(
   cors({
-    origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000"],
+    origin: ["https://codesmasher.in", "https://www.codesmasher.in", "http://localhost:3000","https://codeshuttle.netlify.app"],
     credentials: true,
   })
 );
